@@ -93,6 +93,7 @@ public class Model {
 		this.predecessore.put(c, null);
 		
 		bfv.addTraversalListener(new TraversalListener<Country, DefaultEdge>() {
+			
 
 			@Override
 			public void connectedComponentFinished(ConnectedComponentTraversalEvent e) {
