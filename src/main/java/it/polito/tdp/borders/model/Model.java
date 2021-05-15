@@ -1,11 +1,14 @@
 package it.polito.tdp.borders.model;
 
+
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import org.jgrapht.Graphs;
+import org.jgrapht.alg.connectivity.ConnectivityInspector;
 import org.jgrapht.event.ConnectedComponentTraversalEvent;
 import org.jgrapht.event.EdgeTraversalEvent;
 import org.jgrapht.event.TraversalListener;
@@ -41,8 +44,15 @@ public class Model {
 		
 		Graphs.addAllVertices(grafo, dao.getVertici(anno, idMap));
 	
+		List<Border> confini = dao.getCountryPairs(anno, idMap);
 		
-		for (Border b: dao.getCountryPairs(anno, idMap)) {	
+		for (Border b: confini) {
+			grafo.addVertex(b.getS1());
+			grafo.addVertex(b.getS2());
+			grafo.addEdge(b.getS1(), b.getS2());
+		}
+		
+/*		for (Border b: dao.getCountryPairs(anno, idMap)) {	
 			if (this.grafo.containsVertex(b.getS1()) && this.grafo.containsVertex(b.getS2())) {
 				DefaultEdge e = this.grafo.getEdge(b.getS1(), b.getS2());
 				if (e == null) {
@@ -50,7 +60,7 @@ public class Model {
 				}
 			}
 		}
-		
+*/		
 		//System.out.println("# vertici = " + grafo.vertexSet().size());
 		//System.out.println("# archi = " + grafo.edgeSet().size());		
 		
@@ -84,6 +94,11 @@ public class Model {
 	      	lista.add(entry.getKey());	
 	    }
 		return lista;
+	}
+	
+	public int getNumeroComponentiConnesse() {
+		ConnectivityInspector<Country, DefaultEdge> ci = new ConnectivityInspector<Country, DefaultEdge> (grafo);
+		return ci.connectedSets().size();
 	}
 	
 	public List<Country> statiRaggiungibili(Country c) {
@@ -143,6 +158,18 @@ public class Model {
 		}
 		
 		return risposta;
+	}
+	
+	public List<Country> statiRaggiungibiliGetParent(Country c) {
+		BreadthFirstIterator<Country, DefaultEdge> bfv = 
+				new BreadthFirstIterator<Country, DefaultEdge>(this.grafo, c) ;
+		List<Country> result = new ArrayList<>() ;
+
+		while(bfv.hasNext())
+			result.add(bfv.next()); 
+		
+		return result ;
+		
 	}
 
 

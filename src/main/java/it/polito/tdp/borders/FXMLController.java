@@ -41,10 +41,11 @@ public class FXMLController {
     		return;
     	}
     	model.creaGrafo(x);
-    	txtResult.appendText("Il numero di vertici è: " + Integer.toString(model.numVertici()));
+    	txtResult.appendText("il numero di componenti connesse è: " + Integer.toString(model.getNumeroComponentiConnesse()));
+    	txtResult.appendText("\nIl numero di vertici è: " + Integer.toString(model.numVertici()));
     	txtResult.appendText("\nIl numero di archi è: " + Integer.toString(model.numArchi()) + "\n");
     	txtResult.appendText(model.rotte(x));
-    	
+
     	cbxCountry.getItems().addAll(this.model.getVertici(x)) ;
     }
     
@@ -53,7 +54,7 @@ public class FXMLController {
     	Country c = cbxCountry.getValue();
     	txtResult.clear();
     	txtResult.appendText("posso raggiungere i seguenti stati: \n");
-    	txtResult.appendText(model.statiRaggiungibili(c).toString());
+    	txtResult.appendText(model.statiRaggiungibiliGetParent(c).toString());
     }
 
     @FXML // This method is called by the FXMLLoader when initialization is complete

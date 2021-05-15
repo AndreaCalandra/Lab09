@@ -44,7 +44,7 @@ public class BordersDAO {
 		
 		String sql = "SELECT state1no, state2no, year "
 				+ "FROM contiguity "
-				+ "WHERE YEAR <= ? AND state1no < state2no AND conttype = 1";
+				+ "WHERE YEAR <= ? AND conttype = 1";
 		
 		List<Border> lista = new ArrayList<Border>();
 		
